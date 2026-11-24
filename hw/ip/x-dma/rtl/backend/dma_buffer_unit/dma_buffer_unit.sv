@@ -9,11 +9,11 @@
  */
 
 module dma_buffer_unit
-  import dma_reg_pkg::*;
+    import dma_reg_pkg::*;
 #(
-    parameter int FIFO_DEPTH = 4,
+    parameter int  FIFO_DEPTH  = 4,
     // OBI FIFO data types
-    parameter type fifo_req_t = logic,
+    parameter type fifo_req_t  = logic,
     parameter type fifo_resp_t = logic
 ) (
     input logic clk_i,
@@ -34,73 +34,73 @@ module dma_buffer_unit
     input  fifo_resp_t hw_fifo_resp_i,
     output fifo_req_t  hw_fifo_req_o
 );
-  `include "dma_conf.svh"
+    `include "dma_conf.svh"
 
-  logic hw_fifo_mode;
+    logic              hw_fifo_mode;
 
-  fifo_req_t read_fifo_req;
-  fifo_resp_t read_fifo_resp;
+    fifo_req_t         read_fifo_req;
+    fifo_resp_t        read_fifo_resp;
 
-  logic read_buffer_pop;
+    logic              read_buffer_pop;
 
-  logic [3:0] read_fifo_pop;
+    logic       [ 3:0] read_fifo_pop;
 
-  logic [31:0] read_fifo_output;
-  logic [31:0] read_buffer_output;
+    logic       [31:0] read_fifo_output;
+    logic       [31:0] read_buffer_output;
 
-  dma_buffer_fifos #(
-      .FIFO_DEPTH(FIFO_DEPTH),
-      .fifo_req_t(fifo_req_t),
-      .fifo_resp_t(fifo_resp_t)
-  ) dma_buffer_fifos_i (
-      .clk_i,
-      .rst_ni,
+    dma_buffer_fifos #(
+        .FIFO_DEPTH (FIFO_DEPTH),
+        .fifo_req_t (fifo_req_t),
+        .fifo_resp_t(fifo_resp_t)
+    ) dma_buffer_fifos_i (
+        .clk_i,
+        .rst_ni,
 
-      .hw_fifo_mode_i(hw_fifo_mode),
+        .hw_fifo_mode_i(hw_fifo_mode),
 
-      .read_fifo_pop_i(read_fifo_pop),
+        .read_fifo_pop_i(read_fifo_pop),
 
-      .read_fifo_req_i(read_fifo_req),
-      .read_addr_fifo_req_i(read_addr_buffer_req_i),
-      .write_fifo_req_i(write_buffer_req_i),
+        .read_fifo_req_i     (read_fifo_req),
+        .read_addr_fifo_req_i(read_addr_buffer_req_i),
+        .write_fifo_req_i    (write_buffer_req_i),
 
-      .read_fifo_resp_o(read_fifo_resp),
-      .read_addr_fifo_resp_o(read_addr_buffer_resp_o),
-      .write_fifo_resp_o(write_buffer_resp_o),
+        .read_fifo_resp_o     (read_fifo_resp),
+        .read_addr_fifo_resp_o(read_addr_buffer_resp_o),
+        .write_fifo_resp_o    (write_buffer_resp_o),
 
-      .hw_fifo_resp_i,
-      .hw_fifo_req_o
-  );
+        .hw_fifo_resp_i,
+        .hw_fifo_req_o
+    );
 
-  dma_buffer_control dma_buffer_control_i (
-      .clk_i,
-      .rst_ni,
-      .reg2hw_i,
+    dma_buffer_control dma_buffer_control_i (
+        .clk_i,
+        .rst_ni,
+        .reg2hw_i,
 
-      .dma_start_i,
+        .dma_start_i,
 
-      .read_buffer_pop_i(read_buffer_pop),
+        .read_buffer_pop_i(read_buffer_pop),
 
-      .read_fifo_output_i(read_fifo_output),
+        .read_fifo_output_i(read_fifo_output),
 
-      .read_fifo_pop_o(read_fifo_pop),
+        .read_fifo_pop_o(read_fifo_pop),
 
-      .read_buffer_output_o(read_buffer_output)
-  );
+        .read_buffer_output_o(read_buffer_output)
+    );
 
-  assign hw_fifo_mode = reg2hw_i.hw_fifo_en.q;
+    assign hw_fifo_mode                = reg2hw_i.hw_fifo_en.q;
 
-  /* Due to the read FIFOs structure, thie pop signal is actually overridden by read_fifo_pop */
-  assign read_fifo_req.pop = 1'b0;
-  assign read_buffer_pop = read_buffer_req_i.pop;
-  assign read_fifo_req.push = read_buffer_req_i.push;
-  assign read_fifo_req.flush = read_buffer_req_i.flush;
-  assign read_fifo_req.data = read_buffer_req_i.data;
+    /* Due to the read FIFOs structure, thie pop signal is actually overridden by read_fifo_pop */
+    assign read_fifo_req.pop           = 1'b0;
+    assign read_buffer_pop             = read_buffer_req_i.pop;
+    assign read_fifo_req.push          = read_buffer_req_i.push;
+    assign read_fifo_req.flush         = read_buffer_req_i.flush;
+    assign read_fifo_req.data          = read_buffer_req_i.data;
 
-  assign read_buffer_resp_o.empty = read_fifo_resp.empty;
-  assign read_buffer_resp_o.full = read_fifo_resp.full;
-  assign read_buffer_resp_o.alm_full = read_fifo_resp.alm_full;
-  assign read_buffer_resp_o.data = read_buffer_output;
-  assign read_fifo_output = read_fifo_resp.data;
+    assign read_buffer_resp_o.empty    = read_fifo_resp.empty;
+    assign read_buffer_resp_o.full     = read_fifo_resp.full;
+    assign read_buffer_resp_o.alm_full = read_fifo_resp.alm_full;
+    assign read_buffer_resp_o.data     = read_buffer_output;
+    assign read_fifo_output            = read_fifo_resp.data;
 
 endmodule

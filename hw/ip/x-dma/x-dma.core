@@ -6,13 +6,18 @@ filesets:
     depend:
       - pulp-platform.org::register_interface
 
-  rtl:
+  files_rtl:
+    depend:
+      - pulp-platform.org::common_cells
+      - pulp-platform.org::register_interface
     file_type: systemVerilogSource
     files:
+      - x_dma_reg_pkg.sv
+      - x_dma_reg_top.sv
       - x_dma.sv
 
 targets:
   default:
     filesets:
     - "!target_format ? (!target_lint ? (vendor_modules))"    
-    - rtl
+    - files_rtl
