@@ -34,7 +34,7 @@ filesets:
   
   ip_modules:
     depend:
-      - x-alp:ip:x-dma
+      - x-alp:ip:x_dma
       - x-alp:ip:boot_rom
       - x-heep:ip:soc_ctrl
       - x-heep:ip:fast_intr_ctrl
