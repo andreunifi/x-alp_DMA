@@ -19,14 +19,9 @@ filesets:
     - rtl/x_dma_reg_top.sv
     - rtl/x_dma.sv
     file_type: systemVerilogSource
-  waivers:
-    file_type: vlt
-    files:
-      - soc_ctrl.vlt
 
 targets:
   default:
     filesets:
     - "!target_format ? (!target_lint ? (vendor_modules))"
     - files_rtl
-    - tool_verilator ? (waivers)
