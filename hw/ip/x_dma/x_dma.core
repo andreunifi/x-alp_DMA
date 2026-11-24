@@ -15,9 +15,9 @@ filesets:
 
   files_rtl:
     files:
-    - x_dma_reg_pkg.sv
-    - x_dma_reg_top.sv
-    - x_dma.sv
+    - rtl/x_dma_reg_pkg.sv
+    - rtl/x_dma_reg_top.sv
+    - rtl/x_dma.sv
     file_type: systemVerilogSource
   waivers:
     file_type: vlt
