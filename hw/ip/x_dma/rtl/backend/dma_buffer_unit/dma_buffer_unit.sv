@@ -9,7 +9,7 @@
  */
 
 module dma_buffer_unit
-    import dma_reg_pkg::*;
+    import x_dma_reg_pkg::*;
 #(
     parameter int  FIFO_DEPTH  = 4,
     // OBI FIFO data types

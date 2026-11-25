@@ -18,7 +18,17 @@ filesets:
     - rtl/x_dma_reg_pkg.sv
     - rtl/x_dma_reg_top.sv
     - rtl/x_dma.sv
+    - rtl/x_dma_pkg.sv
+    - rtl/backend/dma_buffer_unit/dma_buffer_control.sv
+    - rtl/backend/dma_buffer_unit/dma_buffer_fifos.sv
+    - rtl/backend/dma_buffer_unit/dma_buffer_unit.sv
     file_type: systemVerilogSource
+
+  headers:
+    files:
+    - data/dma_conf.svh: { is_include_file: true }
+    file_type: systemVerilogSource
+
   waivers:
     file_type: vlt
     files:
@@ -29,5 +39,6 @@ targets:
     filesets:
     - "!target_format ? (!target_lint ? (vendor_modules))"
     - files_rtl
+    - headers
     - tool_verilator ? (waivers)
 

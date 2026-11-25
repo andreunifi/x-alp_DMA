@@ -12,7 +12,7 @@
  */
 
 module dma_buffer_control
-    import dma_reg_pkg::*;
+    import x_dma_reg_pkg::*;
 #(
 ) (
     input logic clk_i,
@@ -31,7 +31,7 @@ module dma_buffer_control
 );
 
 
-    import dma_pkg::*;
+    import x_dma_pkg::*;
     `include "dma_conf.svh"
 
     dma_reg2hw_t                    reg2hw;
