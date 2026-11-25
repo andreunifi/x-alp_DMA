@@ -15,15 +15,15 @@
 */
 
 /**
-* @file   x_dma_structs.h
-* @date   24/11/2026
-* @brief  Contains structs for every register
-*
-* This file contains the structs of the registes of the peripheral.
-* Each structure has the various bit fields that can be accessed
-* independently.
-* 
-*/
+ * @file   x_dma_structs.h
+ * @date   24/11/2026
+ * @brief  Contains structs for every register
+ *
+ * This file contains the structs of the registes of the peripheral.
+ * Each structure has the various bit fields that can be accessed
+ * independently.
+ *
+ */
 
 #ifndef _X_DMA_STRUCTS_H
 #define _X_DMA_STRUCTS_H
@@ -34,8 +34,8 @@
 /**                                                                        **/
 /****************************************************************************/
 
-#include <inttypes.h>
 #include "core_v_mcu.h"
+#include <inttypes.h>
 
 /****************************************************************************/
 /**                                                                        **/
@@ -43,7 +43,7 @@
 /**                                                                        **/
 /****************************************************************************/
 
-#define x_dma_peri ((volatile x_dma *) X_DMA_BASE_ADDRESS)
+#define x_dma_peri ((volatile x_dma *)X_DMA_BASE_ADDRESS)
 
 /****************************************************************************/
 /**                                                                        **/
@@ -51,11 +51,9 @@
 /**                                                                        **/
 /****************************************************************************/
 
-
-
 typedef struct {
 
-  uint32_t STATUS;                                /*!< X-DMA Status reg*/
+  uint32_t STATUS; /*!< X-DMA Status reg*/
 
 } x_dma;
 
@@ -67,9 +65,7 @@ typedef struct {
 
 #ifndef _X_DMA_STRUCTS_C_SRC
 
-
-
-#endif  /* _X_DMA_STRUCTS_C_SRC */
+#endif /* _X_DMA_STRUCTS_C_SRC */
 
 /****************************************************************************/
 /**                                                                        **/
@@ -77,14 +73,11 @@ typedef struct {
 /**                                                                        **/
 /****************************************************************************/
 
-
 /****************************************************************************/
 /**                                                                        **/
 /**                          INLINE FUNCTIONS                              **/
 /**                                                                        **/
 /****************************************************************************/
-
-
 
 #endif /* _X_DMA_STRUCTS_H */
 /****************************************************************************/

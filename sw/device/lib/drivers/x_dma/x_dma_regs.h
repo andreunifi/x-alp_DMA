@@ -14,7 +14,7 @@ extern "C" {
 #define X_DMA_STATUS_OPERATIONAL_BIT 0
 
 #ifdef __cplusplus
-}  // extern "C"
+} // extern "C"
 #endif
-#endif  // _X_DMA_REG_DEFS_
-// End generated register defines for x_dma
+#endif // _X_DMA_REG_DEFS_
+       // End generated register defines for x_dma

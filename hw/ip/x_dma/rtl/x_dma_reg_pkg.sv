@@ -6,34 +6,30 @@
 
 package x_dma_reg_pkg;
 
-  // Address widths within the block
-  parameter int BlockAw = 2;
+    // Address widths within the block
+    parameter int BlockAw = 2;
 
-  ////////////////////////////
-  // Typedefs for registers //
-  ////////////////////////////
+    ////////////////////////////
+    // Typedefs for registers //
+    ////////////////////////////
 
-  typedef struct packed {
-    logic        q;
-  } x_dma_reg2hw_status_reg_t;
+    typedef struct packed {logic q;} x_dma_reg2hw_status_reg_t;
 
-  // Register -> HW type
-  typedef struct packed {
-    x_dma_reg2hw_status_reg_t status; // [0:0]
-  } x_dma_reg2hw_t;
+    // Register -> HW type
+    typedef struct packed {
+        x_dma_reg2hw_status_reg_t status;  // [0:0]
+    } x_dma_reg2hw_t;
 
-  // Register offsets
-  parameter logic [BlockAw-1:0] X_DMA_STATUS_OFFSET = 2'h 0;
+    // Register offsets
+    parameter logic [BlockAw-1:0] X_DMA_STATUS_OFFSET = 2'h0;
 
-  // Register index
-  typedef enum int {
-    X_DMA_STATUS
-  } x_dma_id_e;
+    // Register index
+    typedef enum int {X_DMA_STATUS} x_dma_id_e;
 
-  // Register width information to check illegal writes
-  parameter logic [3:0] X_DMA_PERMIT [1] = '{
-    4'b 0001  // index[0] X_DMA_STATUS
-  };
+    // Register width information to check illegal writes
+    parameter logic [3:0] X_DMA_PERMIT[1] = '{
+        4'b0001  // index[0] X_DMA_STATUS
+    };
 
 endpackage
 
