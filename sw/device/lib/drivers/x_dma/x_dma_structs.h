@@ -5,7 +5,7 @@
 **                                                                         **
 ** project  : x-alp                                                        **
 ** filename : x_dma_structs.h                                 **
-** date     : 25/11/2026                                                      **
+** date     : 26/11/2026                                                      **
 **                                                                         **
 *****************************************************************************
 **                                                                         **
@@ -16,7 +16,7 @@
 
 /**
  * @file   x_dma_structs.h
- * @date   25/11/2026
+ * @date   26/11/2026
  * @brief  Contains structs for every register
  *
  * This file contains the structs of the registes of the peripheral.

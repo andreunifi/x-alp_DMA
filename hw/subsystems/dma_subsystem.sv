@@ -108,6 +108,10 @@ module dma_subsystem (
     output core_v_mcu_pkg::axi_mst_req_t bus_req_o_w,  //this is a master write!
     input  core_v_mcu_pkg::axi_mst_rsp_t bus_rsp_i_w
 );
+
+    import x_dma_pkg::*;  //TODO, remove this
+    //import xalp_fifo_pkg::*;
+
     //TODO this will need to be moved into header files
     typedef struct packed {
         logic [core_v_mcu_pkg::AxiAddrWidth-1:0] src_addr;
@@ -115,6 +119,21 @@ module dma_subsystem (
         logic [core_v_mcu_pkg::AxiAddrWidth-1:0] next_desc_addr;
         logic [31:0] flags;  //todo change this
     } dma_descriptor_t;
+
+    typedef struct packed {
+        logic pop;
+        logic push;
+        logic flush;
+        logic [31:0] data;
+    } fifo_req_t;
+
+    typedef struct packed {
+        logic empty;
+        logic full;
+        logic alm_full;
+        logic [31:0] data;
+    } fifo_resp_t;
+
     //TODO ditto
     dma_descriptor_t [ 1:0] descriptor_memory;  // 4 descriptors in memory stack
     dma_descriptor_t        current_descriptor;  // Current descriptor being processed
@@ -122,6 +141,11 @@ module dma_subsystem (
 
     logic            [63:0] memory_rdata;
 
+    fifo_req_t              mid_to_back_read_req;
+    fifo_resp_t             mid_to_back_read_rsp;
+
+    fifo_req_t              mid_to_back_write_req;
+    fifo_resp_t             mid_to_back_write_rsp;
 
     // 1. Prevent CPU Hangs: Always acknowledge register reads/writes immediately
     //Should i change this? IDK, ideally the peripheral should always be able to respond
@@ -182,6 +206,7 @@ module dma_subsystem (
         bus_req_o_r.ar.burst = '0;  // INCR
         bus_req_o_r.ar.id    = 4'h0;
 
+        mid_to_back_read_req = '0;  // Clear all valid flags and structs
         case (currstate)
             SEND_AR: begin
                 bus_req_o_r.ar_valid = 1'b1;  // Assert address valid!
@@ -197,7 +222,12 @@ module dma_subsystem (
             IDLE: begin
                 if (bus_rsp_i_r.r_valid) begin
                     bus_req_o_r.r_ready = 1'b1;  // Tell memory we are ready to receive data!
-                    memory_rdata        = bus_rsp_i_r.r.data;  // Capture the read data
+                    memory_rdata = bus_rsp_i_r.r.data;  // Capture the read data
+
+                    //controls the buffer unit, which is responsible for storing the data read from memory and providing it to the DMA engine for further processing.
+                    mid_to_back_read_req.data = bus_rsp_i_r.r.data[31:0];  // Forward to buffer unit
+                    mid_to_back_read_req.push = 1'b1;  // Indicate that data is valid for the buffer unit
+
                     //TODO this will always stay high!, i need to have a counter for N_beeats and deactivate it 
                 end else begin
                     bus_req_o_r.r_ready = 1'b0;  // Tell memory we are NOT ready to receive data!
@@ -233,6 +263,31 @@ module dma_subsystem (
 
     /* verilator lint_off PINCONNECTEMPTY */
     /* verilator lint_off PINMISSING      */
+
+    dma_buffer_unit #(
+        .FIFO_DEPTH (4),
+        .fifo_req_t (fifo_req_t),
+        .fifo_resp_t(fifo_resp_t)
+    ) u_dma_buffer_unit (
+        .clk_i (clk_i),
+        .rst_ni(rst_ni),
+
+        .dma_start_i(dma_reg_req_i.valid && dma_reg_req_i.write && dma_reg_req_i.wdata != 32'h0),
+
+        .reg2hw_i(),  // Placeholder for register interface
+
+        .read_buffer_req_i(mid_to_back_read_req),
+        .read_addr_buffer_req_i(),  // Placeholder for read address buffer request
+        .write_buffer_req_i(mid_to_back_write_req),
+
+        .read_buffer_resp_o(mid_to_back_read_rsp),
+        .read_addr_buffer_resp_o(),  // Placeholder for read address buffer response
+        .write_buffer_resp_o(mid_to_back_write_rsp),
+
+        .hw_fifo_resp_i(),  // Placeholder for hardware FIFO response
+        .hw_fifo_req_o ()   // Placeholder for hardware FIFO request
+    );
+
 
 endmodule
 ;

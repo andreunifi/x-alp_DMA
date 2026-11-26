@@ -18,7 +18,7 @@ module dma_buffer_control
     input logic clk_i,
     input logic rst_ni,
 
-    input dma_reg2hw_t reg2hw_i,
+    input x_dma_reg2hw_t reg2hw_i,
 
     input logic dma_start_i,
     input logic read_buffer_pop_i,
@@ -34,19 +34,19 @@ module dma_buffer_control
     import x_dma_pkg::*;
     `include "dma_conf.svh"
 
-    dma_reg2hw_t                    reg2hw;
+    x_dma_reg2hw_t                    reg2hw;
 
-    logic                           dma_start;
-    logic                           read_buffer_pop;
-    logic                           subaddr_mode;
-    logic                           sign_ext;
-    logic                    [ 3:0] read_data_mask;
-    logic                    [ 3:0] read_fifo_pop;
+    logic                             dma_start;
+    logic                             read_buffer_pop;
+    logic                             subaddr_mode;
+    logic                             sign_ext;
+    logic                      [ 3:0] read_data_mask;
+    logic                      [ 3:0] read_fifo_pop;
 
-    logic                    [31:0] read_buffer_output;
-    logic                    [31:0] read_fifo_output;
+    logic                      [31:0] read_buffer_output;
+    logic                      [31:0] read_fifo_output;
 
-    dma_pkg::dma_data_type_t        src_data_type;
+    x_dma_pkg::dma_data_type_t        src_data_type;
 
     /* This logic enables Subaddressing Mode, when enabled */
 `ifdef SUBADDR_MODE_EN

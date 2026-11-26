@@ -10,6 +10,7 @@
 
 module dma_buffer_unit
     import x_dma_reg_pkg::*;
+//import x_dma_pkg::*;
 #(
     parameter int  FIFO_DEPTH  = 4,
     // OBI FIFO data types
@@ -21,7 +22,7 @@ module dma_buffer_unit
 
     input logic dma_start_i,
 
-    input dma_reg2hw_t reg2hw_i,
+    input x_dma_reg2hw_t reg2hw_i,
 
     input fifo_req_t read_buffer_req_i,
     input fifo_req_t read_addr_buffer_req_i,
